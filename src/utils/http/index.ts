@@ -132,12 +132,14 @@ class PureHttp {
         const respData: AxiosResponseData = response.data;
         // fixMe 处理后端统一http status_code == 200 的情况
         if (respData.ret >= 400) {
-          if (respData.ret < 500) {
+          let errorMsg = `${respData.ret}: ${respData.msg}`;
+          if (respData.ret == 403) {
             // message("身份信息已失效", { type: "error" });
+            errorMsg = "登入信息已失效"
             useUserStoreHook().logOut();
           }
           NProgress.done();
-          message(`${respData.ret}: ${respData.msg}`, { type: "error" });
+          message(errorMsg, { type: "error" });
           return Promise.reject(response);
         }
         // 关闭进度条动画
