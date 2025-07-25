@@ -11,6 +11,7 @@ import type {
 } from "./types.d";
 import { stringify } from "qs";
 import NProgress from "../progress";
+import { message } from "@/utils/message";
 import { getToken, formatToken } from "@/utils/auth";
 import { useUserStoreHook } from "@/store/modules/user";
 
@@ -27,6 +28,13 @@ const defaultConfig: AxiosRequestConfig = {
   paramsSerializer: {
     serialize: stringify as unknown as CustomParamsSerializer
   }
+};
+
+export type AxiosResponseData = {
+  ret: number;
+  msg: string;
+  data?: Object | Array<any>;
+  success: boolean;
 };
 
 class PureHttp {
@@ -121,6 +129,17 @@ class PureHttp {
     instance.interceptors.response.use(
       (response: PureHttpResponse) => {
         const $config = response.config;
+        const respData: AxiosResponseData = response.data;
+        // fixMe 处理后端统一http status_code == 200 的情况
+        if (respData.ret >= 400) {
+          if (respData.ret < 500) {
+            // message("身份信息已失效", { type: "error" });
+            useUserStoreHook().logOut();
+          }
+          NProgress.done();
+          message(`${respData.ret}: ${respData.msg}`, { type: "error" });
+          return Promise.reject(response);
+        }
         // 关闭进度条动画
         NProgress.done();
         // 优先判断post/get等方法是否传入回调，否则执行初始化设置等回调
@@ -139,6 +158,7 @@ class PureHttp {
         $error.isCancelRequest = Axios.isCancel($error);
         // 关闭进度条动画
         NProgress.done();
+        message("后端服务异常", { type: "error" });
         // 所有的响应异常 区分来源为取消请求/非取消请求
         return Promise.reject($error);
       }

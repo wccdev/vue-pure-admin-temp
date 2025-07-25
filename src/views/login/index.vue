@@ -39,6 +39,7 @@ defineOptions({
 });
 
 const imgCode = ref("");
+const imgVerifyCodeComp = ref(null);
 const loginDay = ref(7);
 const router = useRouter();
 const loading = ref(false);
@@ -62,6 +63,12 @@ const ruleForm = reactive({
   password: "admin123",
   verifyCode: ""
 });
+
+/** 重置图片验证码 */
+function clearVerifyCode() {
+  ruleForm.verifyCode = "";
+  imgVerifyCodeComp.value.getImgCode();
+}
 
 const onLogin = async (formEl: FormInstance | undefined) => {
   if (!formEl) return;
@@ -89,6 +96,7 @@ const onLogin = async (formEl: FormInstance | undefined) => {
             message(t("login.pureLoginFail"), { type: "error" });
           }
         })
+        .catch(e => { clearVerifyCode(); })
         .finally(() => (loading.value = false));
     }
   });
@@ -228,7 +236,7 @@ watch(loginDay, value => {
                   :prefix-icon="useRenderIcon(Keyhole)"
                 >
                   <template v-slot:append>
-                    <ReImageVerify v-model:code="imgCode" />
+                    <ReImageVerify ref="imgVerifyCodeComp" v-model:code="imgCode" />
                   </template>
                 </el-input>
               </el-form-item>
