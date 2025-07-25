@@ -11,6 +11,8 @@ export const REGEXP_SIX = /^\d{6}$/;
 export const REGEXP_PWD =
   /^(?![0-9]+$)(?![a-z]+$)(?![A-Z]+$)(?!([^(0-9a-zA-Z)]|[()])+$)(?!^.*[\u4E00-\u9FA5].*$)([^(0-9a-zA-Z)]|[()]|[a-z]|[A-Z]|[0-9]){8,18}$/;
 
+export const REGEXP_PWD2 =/[a-zA-Z0-9]{3,20}/;
+
 /** 登录校验 */
 const loginRules = reactive<FormRules>({
   password: [
@@ -18,7 +20,7 @@ const loginRules = reactive<FormRules>({
       validator: (rule, value, callback) => {
         if (value === "") {
           callback(new Error(transformI18n($t("login.purePassWordReg"))));
-        } else if (!REGEXP_PWD.test(value)) {
+        } else if (!REGEXP_PWD2.test(value)) {
           callback(new Error(transformI18n($t("login.purePassWordRuleReg"))));
         } else {
           callback();

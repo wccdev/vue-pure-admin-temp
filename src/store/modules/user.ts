@@ -76,9 +76,9 @@ export const useUserStore = defineStore("pure-user", {
       this.loginDay = Number(value);
     },
     /** 登入 */
-    async loginByUsername(data) {
+    async loginByUsername(authenticateKwargs: object) {
       return new Promise<UserResult>((resolve, reject) => {
-        getLogin(data)
+        getLogin(authenticateKwargs)
           .then(data => {
             if (data?.success) setToken(data.data);
             resolve(data);
