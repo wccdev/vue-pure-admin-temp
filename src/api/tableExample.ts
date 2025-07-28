@@ -40,6 +40,14 @@ export const getRoleColumns = () => {
   return http.request<postArrayResult>("options", "/api/roles/", {});
 };
 
+/** 创建角色 */
+export const createRole = (data?: object) => {
+  // return http.request<Result>("get", apiUrl("rbac/menus/"));
+  return http.request<postResult>("post", `api/roles/`, {
+    data
+  });
+};
+
 /** 修改角色 */
 export const updateRole = (id: number, data?: object) => {
   // return http.request<Result>("get", apiUrl("rbac/menus/"));
@@ -47,3 +55,7 @@ export const updateRole = (id: number, data?: object) => {
     data
   });
 };
+
+export const deleteRole = (id: number) => {
+  return http.request<postResult>("delete", `api/roles/${id}/`, {});
+}

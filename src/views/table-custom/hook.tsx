@@ -1,9 +1,14 @@
-import { ref } from "vue";
+import { h, ref } from "vue";
 
-import { getRoleList, updateRole } from "@/api/tableExample";
+import { createRole, getRoleList, updateRole } from "@/api/tableExample";
 // import { useUserStoreHook } from "@/store/modules/user";
 import { onStatusChange, usePublicHooks } from "@/utils/common";
 import { useTableBase } from "@/utils/tableHook";
+import type { FormItemProps } from "./utils/types";
+import { addDialog } from "@/components/ReDialog/index";
+import { deviceDetection } from "@pureadmin/utils";
+import editForm from "./form/index.vue";
+import { message } from "@/utils/message";
 
 export function useTable() {
   const switchLoadMap = ref({});
@@ -47,6 +52,59 @@ export function useTable() {
     }
   ];
 
+  const formRef = ref();
+  const ruleFormRef = ref();
+  function openDialog(title = "新增", row?: FormItemProps) {
+    addDialog({
+      title: `${title}角色`,
+      props: {
+        title,
+        formInline: {
+          name: row?.name ?? "",
+          code: row?.code ?? "",
+          status: row?.status,
+          is_super_role: row?.is_super_role,
+          member: row?.member ?? [],
+          remark: row?.remark ?? ""
+        }
+      },
+      width: "46%",
+      draggable: true,
+      fullscreen: deviceDetection(),
+      fullscreenIcon: true,
+      closeOnClickModal: false,
+      contentRenderer: () => h(editForm, { ref: formRef, title, formInline: null }),
+      beforeSure: (done, { options }) => {
+        const FormRef = formRef.value.getRef();
+        const curData = options.props.formInline as FormItemProps;
+        function chores() {
+          message(`您${title}了名称为${curData.name}的这条数据`, {
+            type: "success"
+          });
+          done(); // 关闭弹框
+          onSearch(); // 刷新表格数据
+        }
+        FormRef.validate(valid => {
+          if (valid) {
+            console.log("curData", curData);
+            // 表单规则校验通过
+            if (title === "新增") {
+              // 实际开发先调用新增接口，再进行下面操作
+              createRole(curData).then(() => {
+                chores();
+              })
+            } else {
+              // 实际开发先调用修改接口，再进行下面操作
+              updateRole(row.id, curData).then(() => {
+                chores();
+              })
+            }
+          }
+        });
+      }
+    });
+  }
+
   const {
     tableLoading,
     tableColumns,
@@ -63,6 +121,7 @@ export function useTable() {
     tableColumns,
     dataList,
     tablePagination,
-    onSearch
+    onSearch,
+    openDialog
   };
 }
