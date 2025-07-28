@@ -1,5 +1,19 @@
 import { http } from "@/utils/http";
 
+type postArrayResult = {
+  ret: number;
+  msg: string;
+  success?: boolean;
+  data?: Array<any>;
+};
+
+type postResult = {
+  ret: number;
+  msg: string;
+  success?: boolean;
+  data?: any;
+};
+
 type Result = {
   success: boolean;
   data?: Array<any>;
@@ -82,4 +96,23 @@ export const getRoleMenu = (data?: object) => {
 /** 获取角色管理-权限-菜单权限-根据角色 id 查对应菜单 */
 export const getRoleMenuIds = (data?: object) => {
   return http.request<Result>("post", "/role-menu-ids", { data });
+};
+
+/** 获取角色管理列表 */
+export const getRoleList2 = (params?: object) => {
+  // return http.request<ResultTable>("post", "/role", { data });
+  return http.request<ResultTable>("get", "/api/roles/", { params });
+};
+
+export const getRoleColumns = () => {
+  // return http.request<ResultTable>("post", "/role", { data });
+  return http.request<postArrayResult>("options", "/api/roles/", {});
+};
+
+/** 修改角色 */
+export const updateRole = (id: number, data?: object) => {
+  // return http.request<Result>("get", apiUrl("rbac/menus/"));
+  return http.request<postResult>("patch", `api/roles/${id}/`, {
+    data
+  });
 };

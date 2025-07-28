@@ -8,6 +8,35 @@ import { system, monitor, permission, frame, tabs } from "@/router/enums";
  * common：普通角色
  */
 
+const cusTable = {
+  pk: 13,
+  code: "tableCustom",
+  path: "/table-custom/index",
+  meta: {
+    code: "tableCustom",
+    icon: "ep:expand",
+    rank: 2,
+    title: "列表Demo",
+    showLink: true,
+    keepAlive: true
+  },
+  children: [
+    {
+      path: "/table-custom/index",
+      component: "",
+      name: "TableCustom",
+      meta: {
+        code: "tableCustom",
+        icon: "ep:expand",
+        rank: 2,
+        title: "列表Demo",
+        showLink: true,
+        keepAlive: true
+      }
+    }
+  ]
+}
+
 const systemManagementRouter = {
   path: "/system",
   meta: {
@@ -328,6 +357,7 @@ export default defineFakeRoute([
       return {
         success: true,
         data: [
+          cusTable,
           systemManagementRouter,
           systemMonitorRouter,
           permissionRouter,
