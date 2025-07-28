@@ -57,6 +57,7 @@ const deleteData = (rowId: number) => {
         </template>
         <template v-slot="{ size, dynamicColumns, tableConf }">
           <CusTable
+            rowKey="id"
             v-bind="tableConf"
             alignWhole="center"
             adaptive
@@ -97,7 +98,7 @@ const deleteData = (rowId: number) => {
                   <el-button
                     class="reset-margin"
                     link
-                    type="primary"
+                    type="danger"
                     :size="size"
                     :icon="useRenderIcon(Delete)"
                   >
