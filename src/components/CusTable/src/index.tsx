@@ -44,7 +44,7 @@ export default defineComponent({
       // extraSearchParams
     } = toRefs(props) as unknown as RePureTableProps;
 
-    const _showHeaderFilter = ref(false);
+    const _showHeaderFilter = ref(true);
 
     watch(
       () => props.showHeaderFilter,

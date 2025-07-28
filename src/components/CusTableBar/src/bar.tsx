@@ -99,7 +99,7 @@ async function fixApiColumns(columnsApi, normalColumns) {
 }
 
 function componentSetUp(props, { emit, slots, attrs }) {
-  const showHeaderFilter = ref(false);
+  const showHeaderFilter = ref(true);
   const refreshList = ref(false);
 
   const size = ref("default");
