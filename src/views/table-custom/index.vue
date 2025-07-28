@@ -1,15 +1,16 @@
 <script setup lang="ts">
-import { reactive } from "vue";
+// import { reactive } from "vue";
 import { CusTable } from "@/components/CusTable";
 import { CusTableBar } from "@/components/CusTableBar";
-import { PaginationProps } from "@pureadmin/table";
+// import { PaginationProps } from "@pureadmin/table";
 import { useTable } from "./hook";
-import { getRoleColumns } from "@/api/system";
+import { getRoleColumns } from "@/api/tableExample";
 
 defineOptions({
   name: "TableCustom"
 });
 
+// 自定义分页信息
 // const pagination = reactive<PaginationProps>({
 //   total: 0,
 //   pageSize: 10,

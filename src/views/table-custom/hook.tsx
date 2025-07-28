@@ -1,6 +1,6 @@
 import { ref } from "vue";
 
-import { getRoleList2 as getRoleList, updateRole } from "@/api/system";
+import { getRoleList, updateRole } from "@/api/tableExample";
 // import { useUserStoreHook } from "@/store/modules/user";
 import { onStatusChange, usePublicHooks } from "@/utils/common";
 import { useTableBase } from "@/utils/tableHook";
