@@ -8,3 +8,7 @@ type Result = {
 export const getAsyncRoutes = () => {
   return http.request<Result>("get", "/get-async-routes");
 };
+
+// export const getAsyncRoutes = () => {
+//   return http.request<Result>("get", "api/menus/getAsyncRoutes/");
+// };

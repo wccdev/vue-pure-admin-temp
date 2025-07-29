@@ -15,7 +15,7 @@ import AddFill from "~icons/ri/add-circle-line";
 
 defineOptions({
   // eslint-disable-next-line vue/no-reserved-component-names
-  name: "Menu"
+  name: "SystemMenu"
 });
 
 const tableRef = ref();

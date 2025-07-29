@@ -44,7 +44,7 @@ export function useMenu() {
     {
       label: "ID",
       prop: "id",
-      width: 50,
+      // width: 50,
       fixed: true
     },
     {
@@ -94,7 +94,7 @@ export function useMenu() {
       cellRenderer: ({ row, props }) => (
         <el-tag
           size={props.size}
-          type={row.type === menuTypes.menu.value ? "" : "success"}
+          type={row.type === menuTypes.menu.value ? "primary" : "success"}
           disable-transitions
         >
           {row.type === menuTypes.menu.value
