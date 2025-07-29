@@ -1,30 +1,38 @@
 interface FormItemProps {
-  /** 菜单类型（0代表菜单、1代表iframe、2代表外链、3代表按钮）*/
-  menuType: number;
   higherMenuOptions: Record<string, unknown>[];
+  id: number;
   parentId: number;
-  title: string;
   name: string;
-  path: string;
   component: string;
-  rank: number;
+  code: string;
+  path: string;
   redirect: string;
-  icon: string;
-  extraIcon: string;
-  enterTransition: string;
-  leaveTransition: string;
-  activePath: string;
-  auths: string;
-  frameSrc: string;
-  frameLoading: boolean;
-  keepAlive: boolean;
-  hiddenTag: boolean;
-  fixedTag: boolean;
-  showLink: boolean;
-  showParent: boolean;
+  order: number;
+  status: number;
+  meta: any;
+  type: number;
+  menuTransName?: string;
 }
+
 interface FormProps {
   formInline: FormItemProps;
 }
 
-export type { FormItemProps, FormProps };
+interface ButtonItemProps {
+  parentId: number;
+  buttons: {
+    id: number;
+    type: number;
+    order: number;
+    code: string;
+    parentId: number;
+    meta: { rank: number; title: string; icon: string };
+  }[];
+}
+interface ButtonProps {
+  onGetButtons?: Function;
+  formLoading: boolean;
+  formInline: ButtonItemProps;
+}
+
+export type { FormItemProps, FormProps, ButtonItemProps, ButtonProps };
