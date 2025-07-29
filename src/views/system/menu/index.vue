@@ -50,6 +50,7 @@ const permissionMap = {
       title=""
       :columns="tableColumns"
       :tableRef="tableRef?.getTableRef()"
+      @refresh="onSearch"
     >
       <template #buttons>
         <el-button
