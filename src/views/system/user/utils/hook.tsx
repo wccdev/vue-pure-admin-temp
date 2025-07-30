@@ -20,9 +20,9 @@ import {
 import {
   getRoleIds,
   getDeptList,
-  getUserList,
   getAllRoleList
 } from "@/api/system";
+import { getUserList } from "@/api/user";
 import {
   ElForm,
   ElInput,

@@ -2,7 +2,7 @@
 import { ref } from "vue";
 import { transformI18n } from "@/plugins/i18n";
 import ElTreeLine from "@/components/ReTreeLine";
-import { getRolePermission, treeMenu } from "@/api/tableExample";
+import { getRolePermission, treeMenu } from "@/api/roles";
 import { message } from "@/utils/message";
 import { PermDialogProps } from "./utils/types";
 

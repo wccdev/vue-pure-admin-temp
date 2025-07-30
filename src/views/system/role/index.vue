@@ -3,7 +3,7 @@
 import { CusTable } from "@/components/CusTable";
 import { CusTableBar } from "@/components/CusTableBar";
 // import { PaginationProps } from "@pureadmin/table";
-import { getRoleColumns, deleteRole } from "@/api/tableExample";
+import { getRoleColumns, deleteRole } from "@/api/roles";
 import { useRenderIcon } from "@/components/ReIcon/src/hooks";
 import AddFill from "~icons/ri/add-circle-line";
 import Delete from "~icons/ep/delete";

@@ -1,5 +1,5 @@
 import { h, ref } from "vue";
-import { createRole, getRoleList, updateRole, setRolePermission } from "@/api/tableExample";
+import { createRole, getRoleList, updateRole, setRolePermission } from "@/api/roles";
 // import { useUserStoreHook } from "@/store/modules/user";
 import { onStatusChange, usePublicHooks } from "@/utils/common";
 import { useTableBase } from "@/utils/tableHook";
