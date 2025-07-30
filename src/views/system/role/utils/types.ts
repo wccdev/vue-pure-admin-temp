@@ -1,14 +1,16 @@
-// 虽然字段很少 但是抽离出来 后续有扩展字段需求就很方便了
-
 interface FormItemProps {
-  /** 角色名称 */
+  id?: number;
+  /** 用于判断是`新增`还是`修改` */
   name: string;
-  /** 角色编号 */
   code: string;
-  /** 备注 */
+  status: number;
+  is_super_role: boolean;
+  member: Array<number>;
   remark: string;
 }
+
 interface FormProps {
+  title: string;
   formInline: FormItemProps;
 }
 

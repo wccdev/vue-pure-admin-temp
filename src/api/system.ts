@@ -20,8 +20,8 @@ type ResultTable = {
 };
 
 /** 获取系统管理-用户管理列表 */
-export const getUserList = (data?: object) => {
-  return http.request<ResultTable>("get", "/api/users/", { data });
+export const getUserList = (params?: object) => {
+  return http.request<ResultTable>("get", "/api/users/", { params });
 };
 
 /** 系统管理-用户管理-获取所有角色列表 */
