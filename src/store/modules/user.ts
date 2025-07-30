@@ -8,29 +8,36 @@ import {
   storageLocal
 } from "../utils";
 import {
-  type UserResult,
   type UserInfoResult,
+  type UserLoginResult,
   type RefreshTokenResult,
   getLogin,
   getCurrentUserInfo,
   refreshTokenApi
 } from "@/api/user";
 import { useMultiTagsStoreHook } from "./multiTags";
-import { type DataInfo, setToken, setUserInfo, removeToken, userKey } from "@/utils/auth";
+import {
+  type UserInfo,
+  setToken,
+  setUserInfo,
+  removeToken,
+  userKey
+} from "@/utils/auth";
 
 export const useUserStore = defineStore("pure-user", {
   state: (): userType => ({
+    id: storageLocal().getItem<UserInfo<number>>(userKey)?.id ?? null,
     // 头像
-    avatar: storageLocal().getItem<DataInfo<number>>(userKey)?.avatar ?? "",
+    avatar: storageLocal().getItem<UserInfo<number>>(userKey)?.avatar ?? "",
     // 用户名
-    username: storageLocal().getItem<DataInfo<number>>(userKey)?.username ?? "",
+    username: storageLocal().getItem<UserInfo<number>>(userKey)?.username ?? "",
     // 昵称
-    nickname: storageLocal().getItem<DataInfo<number>>(userKey)?.nickname ?? "",
+    nickname: storageLocal().getItem<UserInfo<number>>(userKey)?.nickname ?? "",
     // 页面级别权限
-    roles: storageLocal().getItem<DataInfo<number>>(userKey)?.roles ?? [],
+    roles: storageLocal().getItem<UserInfo<number>>(userKey)?.roles ?? [],
     // 按钮级别权限
     permissions:
-      storageLocal().getItem<DataInfo<number>>(userKey)?.permissions ?? [],
+      storageLocal().getItem<UserInfo<number>>(userKey)?.permissions ?? [],
     // 前端生成的验证码（按实际需求替换）
     verifyCode: "",
     // 判断登录页面显示哪个组件（0：登录（默认）、1：手机登录、2：二维码登录、3：注册、4：忘记密码）
@@ -41,6 +48,9 @@ export const useUserStore = defineStore("pure-user", {
     loginDay: 7
   }),
   actions: {
+    SET_USERID(userId: number) {
+      this.id = userId;
+    },
     /** 存储头像 */
     SET_AVATAR(avatar: string) {
       this.avatar = avatar;
@@ -79,7 +89,7 @@ export const useUserStore = defineStore("pure-user", {
     },
     /** 登入 */
     async loginByUsername(authenticateKwargs: object) {
-      return new Promise<UserResult>((resolve, reject) => {
+      return new Promise<UserLoginResult>((resolve, reject) => {
         getLogin(authenticateKwargs)
           .then(data => {
             if (data?.success) setToken(data.data);

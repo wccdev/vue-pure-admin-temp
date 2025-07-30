@@ -1,18 +1,9 @@
-import { http } from "@/utils/http";
+import { type AxiosResponseData, http } from "@/utils/http";
+import { type PageResult } from "./baseTypes"
 
-export type UserResult = {
-  success: boolean;
+// export type UserResult = {
+export type UserLoginResult = {
   data: {
-    /** 头像 */
-    avatar: string;
-    /** 用户名 */
-    username: string;
-    /** 昵称 */
-    nickname: string;
-    /** 当前登录用户的角色 */
-    roles: Array<string>;
-    /** 按钮级别权限 */
-    permissions: Array<string>;
     /** `token` */
     accessToken: string;
     /** 用于调用刷新`accessToken`的接口时所需的`token` */
@@ -20,10 +11,9 @@ export type UserResult = {
     /** `accessToken`的过期时间（格式'xxxx/xx/xx xx:xx:xx'） */
     expires: Date;
   };
-};
+} & AxiosResponseData;
 
 export type RefreshTokenResult = {
-  success: boolean;
   data: {
     /** `token` */
     accessToken: string;
@@ -32,9 +22,10 @@ export type RefreshTokenResult = {
     /** `accessToken`的过期时间（格式'xxxx/xx/xx xx:xx:xx'） */
     expires: Date;
   };
-};
+} & AxiosResponseData;
 
 export type UserInfo = {
+  id: number;
   /** 头像 */
   avatar: string;
   /** 用户名 */
@@ -51,27 +42,25 @@ export type UserInfo = {
 };
 
 export type UserInfoResult = {
-  success: boolean;
   data: UserInfo;
-};
+} & AxiosResponseData;
 
-type ResultTable = {
-  success: boolean;
+export type UserListResult = {
   data?: {
     /** 列表数据 */
-    list: Array<any>;
+    list: Array<UserInfo>;
     /** 总条目数 */
-    total?: number;
+    total: number;
     /** 每页显示条目个数 */
-    pageSize?: number;
+    pageSize: number;
     /** 当前页数 */
-    currentPage?: number;
+    currentPage: number;
   };
-};
+} & PageResult;
 
 /** 登录 */
 export const getLogin = (data?: object) => {
-  return http.request<UserResult>("post", "/api/token/", { data });
+  return http.request<UserLoginResult>("post", "/api/token/", { data });
 };
 
 /** 刷新`token` */
@@ -86,7 +75,7 @@ export const getMine = (data?: object) => {
 
 /** 账户设置-个人安全日志 */
 export const getMineLogs = (data?: object) => {
-  return http.request<ResultTable>("get", "/mine-logs", { data });
+  return http.request<PageResult>("get", "/mine-logs", { data });
 };
 
 /** 账户设置-个人信息 */
@@ -96,5 +85,5 @@ export const getCurrentUserInfo = () => {
 
 /** 获取系统管理-用户管理列表 */
 export const getUserList = (params?: object) => {
-  return http.request<ResultTable>("get", "/api/users/", { params });
+  return http.request<UserListResult>("get", "/api/users/", { params });
 };

@@ -5,7 +5,7 @@ interface FormItemProps {
   code: string;
   status: number;
   is_super_role: boolean;
-  member: Array<number>;
+  member: Array<object|number>;
   remark: string;
 }
 

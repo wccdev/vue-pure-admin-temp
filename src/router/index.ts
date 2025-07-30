@@ -32,10 +32,11 @@ import {
   createRouter
 } from "vue-router";
 import {
-  type DataInfo,
+  type UserInfo,
   userKey,
   removeToken,
-  multipleTabsKey
+  multipleTabsKey,
+  hasRoutePerms
 } from "@/utils/auth";
 
 /** 自动导入全部静态路由，无需再手动引入！匹配 src/router/modules 目录（任何嵌套级别）中具有 .ts 扩展名的所有文件，除了 remaining.ts 文件
@@ -46,6 +47,7 @@ const modules: Record<string, any> = import.meta.glob(
   [
     // "./modules/**/**.ts",  // 可以看见全部示例页面和组件
     "./modules/home.ts",
+    "./modules/error.ts",
     "!./modules/**/remaining.ts"
   ],
   {
@@ -123,7 +125,7 @@ router.beforeEach((to: ToRouteType, _from, next) => {
       handleAliveRoute(to);
     }
   }
-  const userInfo = storageLocal().getItem<DataInfo<number>>(userKey);
+  const userInfo = storageLocal().getItem<UserInfo<number>>(userKey);
   NProgress.start();
   const externalLink = isUrl(to?.name as string);
   if (!externalLink) {
@@ -141,7 +143,7 @@ router.beforeEach((to: ToRouteType, _from, next) => {
   }
   if (Cookies.get(multipleTabsKey) && userInfo) {
     // 无权限跳转403页面
-    if (to.meta?.roles && !isOneOfArray(to.meta?.roles, userInfo?.roles)) {
+    if (!hasRoutePerms(to.meta?.code)) {
       next({ path: "/error/403" });
     }
     // 开启隐藏首页后在浏览器地址栏手动输入首页welcome路由则跳转到404页面

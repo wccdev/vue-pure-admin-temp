@@ -1,51 +1,22 @@
-import { http } from "@/utils/http";
-
-type Result = {
-  success: boolean;
-  data?: Array<any>;
-};
-
-type postResult = {
-  ret: number;
-  msg: string;
-  success?: boolean;
-  data?: any;
-};
-
-type postArrayResult = {
-  ret: number;
-  msg: string;
-  success?: boolean;
-  data?: Array<any>;
-};
-
-
-export const apiUrl = (url: string) => {
-  if (url.startsWith("/")) {
-    url = url.substring(1);
-  }
-  if (!url.endsWith("/")) {
-    url = `${url}/`;
-  }
-  return `/api/${url}`;
-};
+import { type AxiosResponseData, http } from "@/utils/http";
+import { type PageResult, useApiUrl } from "@/api/baseTypes";
 
 /** 获取菜单管理列表 */
 export const getMenuList = () => {
   // return http.request<Result>("get", apiUrl("rbac/menus/"));
-  return http.request<Result>("get", apiUrl("menus/"), {});
+  return http.request<PageResult>("get", useApiUrl("menus/"), {});
 };
 
 /** 新增菜单 */
 export const createMenu = (data?: object) => {
   // return http.request<Result>("get", apiUrl("rbac/menus/"));
-  return http.request<postResult>("post", apiUrl("menus/"), { data });
+  return http.request<AxiosResponseData>("post", useApiUrl("menus/"), { data });
 };
 
 /** 修改菜单 */
 export const updateMenu = (id: number, data?: object) => {
   // return http.request<Result>("get", apiUrl("rbac/menus/"));
-  return http.request<postResult>("patch", apiUrl(`menus/${id}/`), {
+  return http.request<AxiosResponseData>("patch", useApiUrl(`menus/${id}/`), {
     data
   });
 };
@@ -53,23 +24,23 @@ export const updateMenu = (id: number, data?: object) => {
 /** 菜单树状数据 */
 export const treeMenu = () => {
   // return http.request<Result>("get", apiUrl("rbac/menus/"));
-  return http.request<postArrayResult>("get", apiUrl("menus/tree/"), {});
+  return http.request<AxiosResponseData>("get", useApiUrl("menus/tree/"), {});
 };
 
 /** 菜单按钮 */
 export const getMenuButtons = (id: number) => {
-  return http.request<postResult>(
+  return http.request<AxiosResponseData>(
     "get",
-    apiUrl(`menus/${id}/buttons/`),
+    useApiUrl(`menus/${id}/buttons/`),
     {}
   );
 };
 
 /** 修改菜单按钮 */
 export const setMenuButtons = (id: number, data?: Array<object>) => {
-  return http.request<postResult>(
+  return http.request<AxiosResponseData>(
     "put",
-    apiUrl(`menus/${id}/set-buttons/`),
+    useApiUrl(`menus/${id}/set-buttons/`),
     {
       data
     }

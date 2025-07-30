@@ -31,10 +31,10 @@ const defaultConfig: AxiosRequestConfig = {
 };
 
 export type AxiosResponseData = {
+  success: boolean;
   ret: number;
   msg: string;
-  data?: Object | Array<any>;
-  success: boolean;
+  data?: Object | Array<any> | any;
 };
 
 class PureHttp {

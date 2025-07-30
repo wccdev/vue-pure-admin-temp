@@ -1,49 +1,22 @@
-import { http } from "@/utils/http";
-
-type ResultTable = {
-  success: boolean;
-  data?: {
-    /** 列表数据 */
-    list: Array<any>;
-    /** 总条目数 */
-    total?: number;
-    /** 每页显示条目个数 */
-    pageSize?: number;
-    /** 当前页数 */
-    currentPage?: number;
-  };
-};
-
-type postArrayResult = {
-  ret: number;
-  msg: string;
-  success?: boolean;
-  data?: Array<any>;
-};
-
-type postResult = {
-  ret: number;
-  msg: string;
-  success?: boolean;
-  data?: any;
-};
+import { type AxiosResponseData, http } from "@/utils/http";
+import { type PageResult } from "./baseTypes"
 
 
 /** 获取角色管理列表 */
 export const getRoleList = (params?: object) => {
   // return http.request<ResultTable>("post", "/role", { data });
-  return http.request<ResultTable>("get", "/api/roles/", { params });
+  return http.request<PageResult>("get", "/api/roles/", { params });
 };
 
 export const getRoleColumns = () => {
   // return http.request<ResultTable>("post", "/role", { data });
-  return http.request<postArrayResult>("options", "/api/roles/", {});
+  return http.request<AxiosResponseData>("options", "/api/roles/", {});
 };
 
 /** 创建角色 */
 export const createRole = (data?: object) => {
   // return http.request<Result>("get", apiUrl("rbac/menus/"));
-  return http.request<postResult>("post", "/api/roles/", {
+  return http.request<AxiosResponseData>("post", "/api/roles/", {
     data
   });
 };
@@ -51,23 +24,23 @@ export const createRole = (data?: object) => {
 /** 修改角色 */
 export const updateRole = (id: number, data?: object) => {
   // return http.request<Result>("get", apiUrl("rbac/menus/"));
-  return http.request<postResult>("patch", `/api/roles/${id}/`, {
+  return http.request<AxiosResponseData>("patch", `/api/roles/${id}/`, {
     data
   });
 };
 
 export const deleteRole = (id: number) => {
-  return http.request<postResult>("delete", `api/roles/${id}/`, {});
+  return http.request<AxiosResponseData>("delete", `api/roles/${id}/`, {});
 }
 
 /** 菜单树状数据 */
 export const treeMenu = () => {
   // return http.request<Result>("get", apiUrl("rbac/menus/"));
-  return http.request<postArrayResult>("get", "/api/menus/tree/", {});
+  return http.request<AxiosResponseData>("get", "/api/menus/tree/", {});
 };
 
 export const getRolePermission = (id: number) => {
-  return http.request<postResult>(
+  return http.request<AxiosResponseData>(
     "get",
     `/api/roles/${id}/get-permissions/`,
     {}
@@ -76,7 +49,7 @@ export const getRolePermission = (id: number) => {
 
 export const setRolePermission = (id: number, data?: Array<number>) => {
   // return http.request<Result>("get", apiUrl("rbac/menus/"));
-  return http.request<postResult>(
+  return http.request<AxiosResponseData>(
     "post",
     `/api/roles/${id}/set-permissions/`,
     {
