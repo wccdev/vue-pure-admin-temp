@@ -1,13 +1,15 @@
 import { h, ref } from "vue";
-import { createRole, getRoleList, updateRole } from "@/api/tableExample";
+import { createRole, getRoleList, updateRole, setRolePermission } from "@/api/tableExample";
 // import { useUserStoreHook } from "@/store/modules/user";
 import { onStatusChange, usePublicHooks } from "@/utils/common";
 import { useTableBase } from "@/utils/tableHook";
 import { addDialog } from "@/components/ReDialog/index";
 import { deviceDetection } from "@pureadmin/utils";
 import { message } from "@/utils/message";
-import type { FormItemProps } from "./types";
+
+import type { FormItemProps, PermDialogItemProps } from "./types";
 import editForm from "../form.vue";
+import permForm from "../permForm.vue";
 
 export function useTable() {
   const switchLoadMap = ref({});
@@ -47,7 +49,8 @@ export function useTable() {
     {
       label: "操作",
       fixed: "right",
-      slot: "operation"
+      slot: "operation",
+      minWidth: 120
     }
   ];
 
@@ -104,6 +107,49 @@ export function useTable() {
     });
   }
 
+  async function setPermissionDialog(row: FormItemProps) {
+    // const menuTree = await getMenuTree();
+    // const rolePermis: any = await getRolePerms(row.id);
+    addDialog({
+      title: "权限设置",
+      props: {
+        formInline: {
+          id: row?.id ?? null,
+          permissions: []
+        }
+      },
+      hideFooter: row.is_super_role,
+      width: "40%",
+      draggable: true,
+      fullscreenIcon: true,
+      closeOnClickModal: false,
+      sureBtnLoading: true,
+      contentRenderer: () => h(permForm, { ref: formRef, formInline: null }),
+      beforeSure: (done, { options, index, closeLoading }) => {
+        const FormRef = formRef.value.getRef();
+        const curData = options.props.formInline as PermDialogItemProps;
+        function chores() {
+          message("权限设置成功", {
+            type: "success"
+          });
+          done(); // 关闭弹框
+          onSearch(); // 刷新表格数据
+        }
+        FormRef.validate((isValid: boolean) => {
+          if (isValid) {
+            setRolePermission(row.id, curData.permissions).then(res => {
+              if (res.ret == 200 || res.ret == 201) {
+                chores();
+              }
+            }).catch(() => {
+              closeLoading();
+            });
+          }
+        });
+      }
+    });
+  }
+
   const {
     tableLoading,
     tableColumns,
@@ -121,6 +167,7 @@ export function useTable() {
     dataList,
     tablePagination,
     onSearch,
-    openDialog
+    openDialog,
+    setPermissionDialog
   };
 }

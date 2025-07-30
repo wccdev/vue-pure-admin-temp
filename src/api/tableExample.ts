@@ -43,7 +43,7 @@ export const getRoleColumns = () => {
 /** 创建角色 */
 export const createRole = (data?: object) => {
   // return http.request<Result>("get", apiUrl("rbac/menus/"));
-  return http.request<postResult>("post", `api/roles/`, {
+  return http.request<postResult>("post", "/api/roles/", {
     data
   });
 };
@@ -51,7 +51,7 @@ export const createRole = (data?: object) => {
 /** 修改角色 */
 export const updateRole = (id: number, data?: object) => {
   // return http.request<Result>("get", apiUrl("rbac/menus/"));
-  return http.request<postResult>("patch", `api/roles/${id}/`, {
+  return http.request<postResult>("patch", `/api/roles/${id}/`, {
     data
   });
 };
@@ -59,3 +59,28 @@ export const updateRole = (id: number, data?: object) => {
 export const deleteRole = (id: number) => {
   return http.request<postResult>("delete", `api/roles/${id}/`, {});
 }
+
+/** 菜单树状数据 */
+export const treeMenu = () => {
+  // return http.request<Result>("get", apiUrl("rbac/menus/"));
+  return http.request<postArrayResult>("get", "/api/menus/tree/", {});
+};
+
+export const getRolePermission = (id: number) => {
+  return http.request<postResult>(
+    "get",
+    `/api/roles/${id}/get-permissions/`,
+    {}
+  );
+};
+
+export const setRolePermission = (id: number, data?: Array<number>) => {
+  // return http.request<Result>("get", apiUrl("rbac/menus/"));
+  return http.request<postResult>(
+    "post",
+    `/api/roles/${id}/set-permissions/`,
+    {
+      data
+    }
+  );
+};

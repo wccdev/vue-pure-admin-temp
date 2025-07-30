@@ -14,4 +14,20 @@ interface FormProps {
   formInline: FormItemProps;
 }
 
-export type { FormItemProps, FormProps };
+interface PermDialogItemProps {
+  id: number;
+  /** 菜单权限 */
+  permissions: Array<number>;
+}
+
+interface PermDialogProps {
+  formInline: PermDialogItemProps;
+}
+
+export type {
+  FormItemProps,
+  FormProps,
+  PermDialogProps,
+  PermDialogItemProps
+};
+

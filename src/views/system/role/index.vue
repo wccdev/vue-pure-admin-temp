@@ -21,7 +21,8 @@ const {
   dataList,
   tablePagination,
   onSearch,
-  openDialog
+  openDialog,
+  setPermissionDialog
 } = useTable();
 
 const deleteData = (rowId: number) => {
@@ -82,6 +83,16 @@ const deleteData = (rowId: number) => {
                 @click="openDialog('修改', row)"
               >
                 修改
+              </el-button>
+              <el-button
+                class="reset-margin"
+                link
+                type="primary"
+                :size="size"
+                :icon="useRenderIcon(EditPen)"
+                @click="setPermissionDialog(row)"
+              >
+                权限
               </el-button>
               <el-popconfirm
                 :title="`是否确认删除编号为${row.code}的这条数据`"
