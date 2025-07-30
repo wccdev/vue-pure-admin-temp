@@ -21,6 +21,21 @@ export interface DataInfo<T> {
   permissions?: Array<string>;
 }
 
+export interface UserInfo<T> {
+  avatar: string;
+  /** 用户名 */
+  username: string;
+  /** 昵称 */
+  nickname: string;
+  /** 邮箱 */
+  email: string;
+  /** 联系电话 */
+  phone: string;
+  /** 简介 */
+  roles?: Array<string>;
+  permissions: Array<any>;
+}
+
 export const userKey = "user-info";
 export const TokenKey = "authorized-token";
 /**
@@ -67,7 +82,10 @@ export function setToken(data: DataInfo<Date>) {
         }
       : {}
   );
+  storageLocal().setItem(userKey, { refreshToken, expires });
+}
 
+export function setUserInfo(data: UserInfo<any>) {
   function setUserKey({ avatar, username, nickname, roles, permissions }) {
     useUserStoreHook().SET_AVATAR(avatar);
     useUserStoreHook().SET_USERNAME(username);
@@ -75,8 +93,6 @@ export function setToken(data: DataInfo<Date>) {
     useUserStoreHook().SET_ROLES(roles);
     useUserStoreHook().SET_PERMS(permissions);
     storageLocal().setItem(userKey, {
-      refreshToken,
-      expires,
       avatar,
       username,
       nickname,

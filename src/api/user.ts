@@ -47,6 +47,7 @@ export type UserInfo = {
   phone: string;
   /** 简介 */
   description: string;
+  permissions: Array<any>;
 };
 
 export type UserInfoResult = {
@@ -86,4 +87,9 @@ export const getMine = (data?: object) => {
 /** 账户设置-个人安全日志 */
 export const getMineLogs = (data?: object) => {
   return http.request<ResultTable>("get", "/mine-logs", { data });
+};
+
+/** 账户设置-个人信息 */
+export const getCurrentUserInfo = () => {
+  return http.request<UserInfoResult>("get", "/api/users/me/");
 };

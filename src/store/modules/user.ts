@@ -9,12 +9,14 @@ import {
 } from "../utils";
 import {
   type UserResult,
+  type UserInfoResult,
   type RefreshTokenResult,
   getLogin,
+  getCurrentUserInfo,
   refreshTokenApi
 } from "@/api/user";
 import { useMultiTagsStoreHook } from "./multiTags";
-import { type DataInfo, setToken, removeToken, userKey } from "@/utils/auth";
+import { type DataInfo, setToken, setUserInfo, removeToken, userKey } from "@/utils/auth";
 
 export const useUserStore = defineStore("pure-user", {
   state: (): userType => ({
@@ -82,6 +84,21 @@ export const useUserStore = defineStore("pure-user", {
           .then(data => {
             if (data?.success) setToken(data.data);
             resolve(data);
+          })
+          .catch(error => {
+            reject(error);
+          });
+      });
+    },
+    /** 获取登入账号信息 */
+    async getUserInfo() {
+      return new Promise<UserInfoResult>((resolve, reject) => {
+        getCurrentUserInfo()
+          .then(res => {
+            let userInfo = res.data;
+            userInfo.permissions = userInfo.permissions.map(item => item.perm_code);
+            setUserInfo(userInfo);
+            resolve(res);
           })
           .catch(error => {
             reject(error);
